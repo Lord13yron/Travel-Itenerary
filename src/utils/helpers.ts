@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useEffect, type RefObject } from "react";
 
 export function formatDate(date: string) {
   return format(date, "EEEE, MMMM d yyyy");
@@ -55,4 +56,46 @@ export function daysAway(startDate: string) {
   }
 
   return daysUntilTrip + " Days away";
+}
+
+// export function useClickOutside(
+//   ref: RefObject<HTMLElement>,
+//   callback: () => void
+// ) {
+//   useEffect(() => {
+//     function handleClickOutside(event: MouseEvent) {
+//       if (ref.current && !ref.current.contains(event.target as Node)) {
+//         callback();
+//       }
+//     }
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, [ref, callback]);
+// }
+export function useClickOutside(
+  ref: RefObject<HTMLElement>,
+  toggleRef: RefObject<HTMLElement> | null,
+  callback: () => void
+) {
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target as Node) &&
+        !(
+          toggleRef?.current && toggleRef.current.contains(event.target as Node)
+        )
+      ) {
+        callback();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, toggleRef, callback]);
 }

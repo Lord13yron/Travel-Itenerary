@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import TripItem from "./TripItem";
-import { useTripByUserId } from "./useTrips";
+
 import Button from "../../ui/Button";
 import { usePlanningContext } from "../../store/planning-context";
 import { useAuthContext } from "../../store/Auth-context";
+import { useTripContext } from "../../store/userTrip-context";
 
 export default function Trips() {
   const { setIsPlanning } = usePlanningContext();
   // const { user } = useUser();
   const { user } = useAuthContext();
-  const { trips, isLoading } = useTripByUserId(user?.id || "");
+  // const { trips, isLoading } = useTripByUserId(user?.id || "");
+  const { trips, isLoading } = useTripContext();
 
   if (isLoading) {
     return <div>Loading...</div>;

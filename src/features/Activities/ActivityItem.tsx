@@ -6,6 +6,9 @@ import { useState } from "react";
 import CreateEditActivity from "./CreateEditActivity";
 import { convertTime } from "../../utils/helpers";
 import { MdDragIndicator } from "react-icons/md";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Tooltip from "../../ui/Tooltip";
 
 type ActivityItemProps = {
   activity: Activity;
@@ -15,6 +18,7 @@ type ActivityItemProps = {
 export default function ActivityItem({ activity, index }: ActivityItemProps) {
   const [isCreatingOrEditing, setIsCreatingOrEditing] = useState(false);
   const { deleteActivityById } = useDeleteActivity();
+  const [isDeleting, setIsDeleting] = useState(false);
   return (
     <div
       key={activity.id}
@@ -24,24 +28,25 @@ export default function ActivityItem({ activity, index }: ActivityItemProps) {
       <h6 className="text-white absolute left-[-4px] top-2">{index}</h6>
       <MdDragIndicator className="text-xl absolute left-[-20px] top-10" />
       <div className="absolute flex  gap-2 right-3 top-3">
-        <div className="relative group">
+        <Tooltip tooltipName="Edit Activity" position="top">
           <HiPencilSquare
             onClick={() => setIsCreatingOrEditing(true)}
             className="text-2xl hover:cursor-pointer hover:opacity-60"
           />
-          <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-gray-700 text-white text-xs rounded py-1 px-2 right-0  bottom-full whitespace-nowrap z-10">
-            Edit Activity
-          </div>
-        </div>
-        <div className="relative group">
+        </Tooltip>
+        <Tooltip tooltipName="Delete Activity" position="top">
           <HiTrash
-            onClick={() => deleteActivityById(activity.id)}
+            onClick={() => setIsDeleting(true)}
             className=" text-2xl  hover:cursor-pointer hover:text-red-700"
           />
-          <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-gray-700 text-white text-xs rounded py-1 px-2 right-0  bottom-full whitespace-nowrap z-10">
-            Delete
-          </div>
-        </div>
+        </Tooltip>
+        <Modal isOpen={isDeleting} setIsOpen={setIsDeleting}>
+          <ConfirmDelete
+            deleteItem={() => deleteActivityById(activity.id)}
+            closeModal={() => setIsDeleting(false)}
+            item={activity.name}
+          />
+        </Modal>
       </div>
 
       <h1>{activity.name}</h1>

@@ -5,6 +5,7 @@ import { MdOutlinePlaylistAdd } from "react-icons/md";
 import CreateEditActivity from "../Activities/CreateEditActivity";
 import ActivityItem from "../Activities/ActivityItem";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
+import Tooltip from "../../ui/Tooltip";
 
 type DayListProps = {
   day: {
@@ -29,15 +30,12 @@ export default function DayList({
           {formatDate(day.date.toISOString())}
         </h1>
         <div className="flex gap-2">
-          <div className="relative group">
+          <Tooltip tooltipName="Add Activity" position="left">
             <MdOutlinePlaylistAdd
               onClick={() => setIsCreatingOrEditing(!isCreatingOrEditing)}
               className="text-3xl hover:cursor-pointer hover:opacity-50 m-2"
             />
-            <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-gray-700 text-white text-xs rounded py-1 px-2 right-0  bottom-full whitespace-nowrap z-10">
-              Add Activity
-            </div>
-          </div>
+          </Tooltip>
         </div>
       </div>
 

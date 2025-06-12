@@ -42,3 +42,13 @@ export type Update = {
   day_number: number;
   position: number;
 };
+
+export type TripInvitation = {
+  id?: string;
+  invited_by_email: string;
+  invited_by_id: string;
+  trip_id: number;
+  invitee_email: string;
+  status: "pending" | "accepted" | "declined";
+  trip_city: string;
+};

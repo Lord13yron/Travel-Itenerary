@@ -14,7 +14,7 @@ export default function StartPlanning() {
     <div
       className={`
         w-full bg-sky-50 absolute bottom-0 left-0 z-50
-        transition-[height] duration-500 ease-in-out
+        transition-[height] duration-500 ease-in-out overflow-auto
         ${isPlanning ? "h-full" : "h-0"}
       `}
     >
@@ -28,7 +28,7 @@ export default function StartPlanning() {
             }}
             className="text-red-600 text-xl mt-2 mx-2 hover:cursor-pointer"
           />
-          <div className="p-1 flex-grow flex flex-col items-center">
+          <div className="p-1 flex flex-col items-center">
             <h1 className="capitalize">
               {isEditing
                 ? `Edit Trip ${trip?.start_city} - ${trip?.end_city}`

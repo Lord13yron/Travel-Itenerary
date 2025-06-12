@@ -61,7 +61,7 @@ export default function PlanningForm({ isEditting, trip }: PlanningFormProps) {
   return (
     <form
       onSubmit={handleAddTrip}
-      className="w-full flex flex-col items-center justify-center "
+      className="w-full flex flex-col items-center justify-center"
     >
       <div className="flex flex-col bg-stone-50 w-95/100 m-4 rounded-md shadow-md p-3 gap-4">
         <div className="flex gap-1 items-center">

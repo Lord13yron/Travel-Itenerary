@@ -8,6 +8,7 @@ import Trip from "./pages/Trip";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthProvider } from "./store/Auth-context";
+import { TripProvider } from "./store/userTrip-context";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,17 +24,19 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <PlanningProvider>
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route index element={<Navigate replace to="home" />} />
-                <Route path="home" element={<Home />} />
-                <Route path="trip/:tripId" element={<Trip />} />
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<Signup />} />
-              </Route>
-            </Routes>
-          </PlanningProvider>
+          <TripProvider>
+            <PlanningProvider>
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route index element={<Navigate replace to="home" />} />
+                  <Route path="home" element={<Home />} />
+                  <Route path="trip/:tripId" element={<Trip />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<Signup />} />
+                </Route>
+              </Routes>
+            </PlanningProvider>
+          </TripProvider>
         </AuthProvider>
       </BrowserRouter>
       <Toaster

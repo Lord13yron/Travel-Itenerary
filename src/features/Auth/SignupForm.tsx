@@ -25,27 +25,27 @@ export default function SignupForm() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="flex flex-col gap-4 bg-sky-100 p-4 rounded shadow-md border border-sky-200">
+      <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded shadow-md border border-slate-200">
         <h1 className="text-lg font-bold text-center mb-4">
           Sign up for an account
         </h1>
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
           <input
-            className="bg-white border border-black p-2 rounded"
+            className="bg-slate-100 border border-slate-300 p-2 rounded"
             type="text"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="bg-white border border-black p-2 rounded"
+            className="bg-slate-100 border border-slate-300 p-2 rounded"
             type="text"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            className="bg-white border border-black p-2 rounded"
+            className="bg-slate-100 border border-slate-300 p-2 rounded"
             type="text"
             placeholder="Re-enter password"
             value={confirmPassword}

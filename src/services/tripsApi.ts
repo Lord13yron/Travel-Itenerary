@@ -39,11 +39,49 @@ export async function createTrip(
   }
 }
 
-export async function deleteTrip(id: number): Promise<void> {
-  const { error } = await supabase.from("Trips").delete().eq("id", id);
+// export async function deleteTrip(id: number): Promise<void> {
+//   const { error } = await supabase.from("Trips").delete().eq("id", id);
 
-  if (error) {
-    throw new Error(`Error adding trip: ${error.message}`);
+//   if (error) {
+//     throw new Error(`Error adding trip: ${error.message}`);
+//   }
+// }
+export async function deleteTrip(id: number, userId: string): Promise<void> {
+  // First, delete the user's connection to this trip
+  const { error: deleteConnectionError } = await supabase
+    .from("trip_users")
+    .delete()
+    .eq("trip_id", id)
+    .eq("user_id", userId);
+
+  if (deleteConnectionError) {
+    throw new Error(
+      `Error removing user from trip: ${deleteConnectionError.message}`
+    );
+  }
+
+  // Check if any other users are still connected to this trip
+  const { data: remainingConnections, error: checkError } = await supabase
+    .from("trip_users")
+    .select("*")
+    .eq("trip_id", id);
+
+  if (checkError) {
+    throw new Error(
+      `Error checking remaining trip users: ${checkError.message}`
+    );
+  }
+
+  // Only delete the trip if no users remain connected to it
+  if (remainingConnections.length === 0) {
+    const { error: deleteTripError } = await supabase
+      .from("Trips")
+      .delete()
+      .eq("id", id);
+
+    if (deleteTripError) {
+      throw new Error(`Error deleting trip: ${deleteTripError.message}`);
+    }
   }
 }
 
@@ -88,4 +126,14 @@ export async function getTripsByUserId(userId: string): Promise<Trip[]> {
   // Extract the trip objects from the nested response
   const formattedTrips = trips?.map((item) => item.Trips) || [];
   return formattedTrips as Trip[];
+}
+
+export async function addUserToTrip(tripId: number, userId: string) {
+  const { error } = await supabase
+    .from("trip_users")
+    .insert([{ trip_id: tripId, user_id: userId }])
+    .select();
+  if (error) {
+    throw new Error(`Error adding trip: ${error.message}`);
+  }
 }

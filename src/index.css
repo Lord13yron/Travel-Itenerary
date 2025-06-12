@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+@keyframes bell-ring {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(15deg);
+  }
+  40% {
+    transform: rotate(-15deg);
+  }
+  60% {
+    transform: rotate(7deg);
+  }
+  80% {
+    transform: rotate(-7deg);
+  }
+}
+
+.animate-bell-ring {
+  animation: bell-ring 0.8s ease-in-out infinite;
+}

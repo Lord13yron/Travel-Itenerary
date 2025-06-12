@@ -6,6 +6,7 @@ import {
   updateTrip,
   getTripById,
   getTripsByUserId,
+  addUserToTrip,
 } from "../../services/tripsApi";
 import toast from "react-hot-toast";
 import type { NewTrip, Trip } from "../../types/types";
@@ -21,22 +22,6 @@ export function useTrips() {
   });
   return { trips, isLoading, error };
 }
-
-// export function useAddTrip() {
-//   const queryClient = useQueryClient();
-
-//   const { isPending: isCreating, mutate: createNewTrip } = useMutation({
-//     mutationFn: createTrip,
-//     onSuccess: () => {
-//       toast.success("Trip created successfully!");
-//       queryClient.invalidateQueries({
-//         queryKey: ["Trips"],
-//       });
-//     },
-//     onError: (error) => toast.error(error.message),
-//   });
-//   return { isCreating, createNewTrip };
-// }
 
 export function useAddTrip() {
   const queryClient = useQueryClient();
@@ -59,7 +44,8 @@ export function useDeleteTrip() {
   const queryClient = useQueryClient();
 
   const { isPending: isDeleting, mutate: deleteTripById } = useMutation({
-    mutationFn: (id: number) => deleteTrip(id),
+    mutationFn: ({ id, userId }: { id: number; userId: string }) =>
+      deleteTrip(id, userId),
     onSuccess: () => {
       toast.success("Trip deleted successfully!");
       queryClient.invalidateQueries({
@@ -110,4 +96,24 @@ export function useTripByUserId(userId: string) {
     queryFn: () => getTripsByUserId(userId),
   });
   return { trips, isLoading, error };
+}
+
+export function useAddUserToTrip() {
+  const queryClient = useQueryClient();
+
+  const { isPending: isAdding, mutate: addtoTrip } = useMutation({
+    mutationFn: (payload: { tripId: number; userId: string }) =>
+      addUserToTrip(payload.tripId, payload.userId),
+    onSuccess: () => {
+      toast.success("You have been added to the trip!");
+      queryClient.invalidateQueries({
+        queryKey: ["Trips"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["trip_users"],
+      });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+  return { isAdding, addtoTrip };
 }

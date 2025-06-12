@@ -2,14 +2,18 @@ import { useParams, useNavigationType } from "react-router-dom";
 import { useTripById } from "../features/Trips/useTrips";
 import { formatDate, getDaysBetweenDates } from "../utils/helpers";
 import { useActivitiesByTripId } from "../features/Activities/useActivities";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import TripItinerary from "../store/DragDrop-context";
 import type { Activity } from "../types/types";
+import Button from "../ui/Button";
+import InviteFriends from "../features/Trips/InviteFriends";
+import { HiUserPlus } from "react-icons/hi2";
 
 export default function Trip() {
   const tripId = useParams().tripId;
   const navigationType = useNavigationType();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   const { trip, isLoading: isLoadingTrips } = useTripById(Number(tripId));
   const { activities, isLoading: isLoadingActivities } = useActivitiesByTripId(
@@ -89,15 +93,23 @@ export default function Trip() {
       ref={containerRef}
       className="flex flex-col items-center h-full w-full bg-stone-100 overflow-auto"
     >
-      <div className="flex items-center gap-2 justify-end w-full px-4 fixed bottom-0 bg-sky-100 z-10 p-4 border-t border-stone-300">
-        <h2 className="font-semibold">Trip's Total Cost:</h2>
-        <p className="bg-slate-500 w-fit px-2 py-1 text-slate-50 rounded-md font-bold">
-          ${" "}
-          {totalCost?.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-        </p>
+      <div className="flex items-center gap-2 justify-between w-full px-4 fixed bottom-0 bg-sky-100 z-10 p-4 border-t border-stone-300">
+        <Button onClick={() => setIsInviteOpen(true)} type="secondary">
+          <div className="flex items-center gap-2">
+            <HiUserPlus className="text-xl" />
+            Invite
+          </div>
+        </Button>
+        <div className="flex items-center gap-2">
+          <h2 className="font-semibold text-sm md:text-lg">Total Cost:</h2>
+          <p className="bg-slate-500 w-fit px-2 py-1 text-slate-50 rounded-md font-bold">
+            ${" "}
+            {totalCost?.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </p>
+        </div>
       </div>
       <div className="flex flex-col items-center w-full  bg-stone-100">
         <h1 className="text-2xl font-extrabold capitalize mt-8">
@@ -107,6 +119,15 @@ export default function Trip() {
           {formatDate(trip?.start_date ? trip.start_date : "")} -{" "}
           {formatDate(trip?.end_date ? trip.end_date : "")}
         </h2>
+        {/* <Button onClick={() => setIsInviteOpen(true)} type="secondary">
+          <div className="flex items-center gap-2">
+            <HiUserPlus className="text-xl" />
+            Invite Friends
+          </div>
+        </Button> */}
+        {isInviteOpen && (
+          <InviteFriends setIsInviteOpen={setIsInviteOpen} trip={trip} />
+        )}
       </div>
 
       <TripItinerary
