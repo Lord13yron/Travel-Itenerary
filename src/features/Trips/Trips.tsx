@@ -8,9 +8,7 @@ import { useTripContext } from "../../store/userTrip-context";
 
 export default function Trips() {
   const { setIsPlanning } = usePlanningContext();
-  // const { user } = useUser();
   const { user } = useAuthContext();
-  // const { trips, isLoading } = useTripByUserId(user?.id || "");
   const { trips, isLoading } = useTripContext();
 
   if (isLoading) {

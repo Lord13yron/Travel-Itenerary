@@ -28,8 +28,16 @@ export default function Header() {
       ) || [],
     [receivedInvitations]
   );
+
+  const shownSentInvites = useMemo(
+    () =>
+      sentInvitations?.filter(
+        (invitation) => invitation.status !== "completed"
+      ) || [],
+    [sentInvitations]
+  );
   const invitesCount =
-    (sentInvitations ? sentInvitations.length : 0) +
+    (shownSentInvites ? shownSentInvites.length : 0) +
     (shownReceivedInvites ? shownReceivedInvites.length : 0);
 
   useEffect(() => {
@@ -79,17 +87,6 @@ export default function Header() {
         ) : (
           <div ref={iconRef}>
             {invitesCount > 0 && (
-              // <div className="relative group">
-              //   <div
-              //     onClick={() => setIsInviteOpen(!isInviteOpen)}
-              //     className="flex items-center justify-center rounded-[50%] bg-red-700 p-3 w-4 h-4 absolute top-[-13px] right-[-11px] text-white text-[10px] font-bold hover:cursor-pointer hover:bg-red-400 transition-colors duration-300 "
-              //   >
-              //     {invitesCount > 99 ? "99+" : invitesCount}
-              //   </div>
-              //   <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-gray-700 text-white text-xs rounded py-1 px-2 right-5  bottom-full whitespace-nowrap z-10">
-              //     Invites
-              //   </div>
-              // </div>
               <Tooltip tooltipName="Invites" position="left">
                 <div
                   onClick={() => setIsInviteOpen(!isInviteOpen)}
@@ -99,15 +96,7 @@ export default function Header() {
                 </div>
               </Tooltip>
             )}
-            {/* <div className="relative group">
-              <HiUserCircle
-                onClick={() => setIsInviteOpen(!isInviteOpen)}
-                className="text-4xl text-sky-800 hover:cursor-pointer hover:text-sky-600 transition-colors duration-300"
-              />
-              <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-gray-700 text-white text-xs rounded py-1 px-2 right-5  whitespace-nowrap z-10">
-                Profile
-              </div>
-            </div> */}
+
             <Tooltip tooltipName="Profile" position="bottom">
               <HiUserCircle
                 onClick={() => setIsInviteOpen(!isInviteOpen)}

@@ -49,6 +49,6 @@ export type TripInvitation = {
   invited_by_id: string;
   trip_id: number;
   invitee_email: string;
-  status: "pending" | "accepted" | "declined";
+  status: "pending" | "accepted" | "declined" | "completed";
   trip_city: string;
 };

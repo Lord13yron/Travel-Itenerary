@@ -10,14 +10,6 @@ export async function getTrips(): Promise<Trip[]> {
   return trips as Trip[];
 }
 
-// export async function createTrip(trip: Omit<Trip, "id">): Promise<Trip> {
-//   const { data, error } = await supabase.from("Trips").insert([trip]).select();
-//   if (error) {
-//     throw new Error(`Error adding trip: ${error.message}`);
-//   }
-//   return data[0] as Trip;
-// }
-
 export async function createTrip(
   trip: Omit<Trip, "id">,
   userId: string
@@ -39,13 +31,6 @@ export async function createTrip(
   }
 }
 
-// export async function deleteTrip(id: number): Promise<void> {
-//   const { error } = await supabase.from("Trips").delete().eq("id", id);
-
-//   if (error) {
-//     throw new Error(`Error adding trip: ${error.message}`);
-//   }
-// }
 export async function deleteTrip(id: number, userId: string): Promise<void> {
   // First, delete the user's connection to this trip
   const { error: deleteConnectionError } = await supabase

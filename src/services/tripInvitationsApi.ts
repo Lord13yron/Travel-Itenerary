@@ -56,7 +56,7 @@ export async function deleteTripInvitation(invitationId: number) {
 
 export async function updateTripInvitationStatus(
   invitationId: number,
-  status: "accepted" | "declined"
+  status: "accepted" | "declined" | "pending" | "completed"
 ) {
   const { error } = await supabase
     .from("trip_invitations")
@@ -65,4 +65,15 @@ export async function updateTripInvitationStatus(
     .select();
 
   if (error) throw new Error(error.message);
+}
+
+export async function getTripInvitationsByTripId(tripId: number) {
+  const { data, error } = await supabase
+    .from("trip_invitations")
+    .select("*")
+    .eq("trip_id", tripId);
+
+  if (error) throw new Error(error.message);
+
+  return data as TripInvitation[];
 }

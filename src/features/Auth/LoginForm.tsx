@@ -2,12 +2,14 @@ import { useState } from "react";
 import Button from "../../ui/Button";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../store/Auth-context";
+import Modal from "../../ui/Modal";
+import ForgotPassword from "./ForgotPassWord";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const { login, isPending } = useLogin();
   const { login } = useAuthContext();
+  const [isResetOpen, setIsResetOpen] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,6 +51,18 @@ export default function LoginForm() {
             Signup here!
           </Link>
         </p>
+        <p className="text-center">
+          Forgot password?{" "}
+          <span
+            onClick={() => setIsResetOpen(true)}
+            className="text-sky-600 underline hover:text-sky-800 hover:cursor-pointer"
+          >
+            Click here!
+          </span>
+        </p>
+        <Modal isOpen={isResetOpen} setIsOpen={setIsResetOpen}>
+          <ForgotPassword setIsOpen={setIsResetOpen} />
+        </Modal>
       </div>
     </div>
   );

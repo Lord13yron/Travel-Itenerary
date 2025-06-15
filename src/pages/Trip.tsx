@@ -112,8 +112,9 @@ export default function Trip() {
         </div>
       </div>
       <div className="flex flex-col items-center w-full  bg-stone-100">
-        <h1 className="text-2xl font-extrabold capitalize mt-8">
-          {trip?.start_city} to {trip?.end_city}
+        <h1 className="text-2xl font-extrabold mt-8">
+          <span className="capitalize">{trip?.start_city}</span> to{" "}
+          <span className="capitalize">{trip?.end_city}</span>
         </h1>
         <h2 className="text-sm italic mb-4">
           {formatDate(trip?.start_date ? trip.start_date : "")} -{" "}

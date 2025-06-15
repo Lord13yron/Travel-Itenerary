@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthProvider } from "./store/Auth-context";
 import { TripProvider } from "./store/userTrip-context";
+import ResetPassword from "./pages/ResetPassword";
+import PageNotFound from "./pages/PageNotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +35,8 @@ function App() {
                   <Route path="trip/:tripId" element={<Trip />} />
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<Signup />} />
+                  <Route path="reset-password" element={<ResetPassword />} />
+                  <Route path="*" element={<PageNotFound />} />
                 </Route>
               </Routes>
             </PlanningProvider>

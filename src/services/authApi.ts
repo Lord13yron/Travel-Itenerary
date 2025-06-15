@@ -48,3 +48,11 @@ export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
 }
+
+export async function resetPassword(email: string) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

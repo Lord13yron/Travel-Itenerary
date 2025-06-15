@@ -2,7 +2,10 @@ import { HiXCircle } from "react-icons/hi2";
 import Button from "./Button";
 import type { TripInvitation } from "../types/types";
 import toast from "react-hot-toast";
-import { useDeleteTripInvitation } from "../features/Trips/useTripInvitations";
+import {
+  useDeleteTripInvitation,
+  useUpdateTripInvitationStatus,
+} from "../features/Trips/useTripInvitations";
 
 type InviteProps = {
   invite: TripInvitation;
@@ -10,9 +13,16 @@ type InviteProps = {
 
 export default function SentInvitations({ invite }: InviteProps) {
   const { isDeleting, deleteTripInvitationById } = useDeleteTripInvitation();
+  const { isUpdating, updateInvitationStatus } =
+    useUpdateTripInvitationStatus();
 
   function handleRemove() {
-    deleteTripInvitationById(Number(invite.id));
+    if (invite.status === "accepted") {
+      updateInvitationStatus({
+        id: Number(invite.id),
+        status: "completed",
+      });
+    } else deleteTripInvitationById(Number(invite.id));
     toast.success("Trip Invitation has been removed");
   }
 
@@ -28,7 +38,11 @@ export default function SentInvitations({ invite }: InviteProps) {
         <p className="font-bold">
           Status: <span className="font-normal italic">{invite.status}</span>
         </p>
-        <Button disabled={isDeleting} onClick={handleRemove} type="secondary">
+        <Button
+          disabled={isDeleting || isUpdating}
+          onClick={handleRemove}
+          type="secondary"
+        >
           <div className="flex items-center gap-1">
             <h2>Remove</h2>
             <HiXCircle className="text-xl" />

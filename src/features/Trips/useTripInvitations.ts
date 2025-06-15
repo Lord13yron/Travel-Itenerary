@@ -3,6 +3,7 @@ import {
   deleteTripInvitation,
   getReceivedTripInvitations,
   getSentTripInvitations,
+  getTripInvitationsByTripId,
   insertTripInvitation,
   updateTripInvitationStatus,
 } from "../../services/tripInvitationsApi";
@@ -76,7 +77,7 @@ export function useUpdateTripInvitationStatus() {
         status,
       }: {
         id: number;
-        status: "accepted" | "declined";
+        status: "accepted" | "declined" | "pending" | "completed";
       }) => updateTripInvitationStatus(id, status),
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -88,4 +89,16 @@ export function useUpdateTripInvitationStatus() {
   );
 
   return { isUpdating, updateInvitationStatus };
+}
+
+export function useTripInvitationByTripId(tripId: number) {
+  const {
+    data: tripInvitations,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["trip_invitations", tripId],
+    queryFn: () => getTripInvitationsByTripId(tripId),
+  });
+  return { tripInvitations, isLoading, error };
 }
